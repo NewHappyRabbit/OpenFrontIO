@@ -38,6 +38,8 @@ export async function createGameRunner(
 ): Promise<GameRunner> {
   const userSettings: UserSettings = new UserSettings();
   const config = getConfig(gameConfig, userSettings);
+  const userSettings: UserSettings = new UserSettings();
+  const config = getConfig(gameConfig, userSettings);
   const gameMap = await loadGameMap(gameConfig.gameMap);
   const game = createGame(
     gameMap.gameMap,
