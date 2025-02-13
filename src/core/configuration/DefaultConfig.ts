@@ -13,6 +13,7 @@ import {
 } from "../game/Game";
 import { GameMap, TileRef } from "../game/GameMap";
 import { PlayerView } from "../game/GameView";
+import { UserSettings } from "../game/UserSettings";
 import { GameConfig } from "../Schemas";
 import { assertNever, within } from "../Util";
 import { Config, ServerConfig, Theme } from "./Config";
@@ -34,6 +35,7 @@ export class DefaultConfig implements Config {
   constructor(
     private _serverConfig: ServerConfig,
     private _gameConfig: GameConfig,
+    private _userSettings: UserSettings,
   ) {}
 
   gameConfig(): GameConfig {
@@ -42,6 +44,10 @@ export class DefaultConfig implements Config {
 
   serverConfig(): ServerConfig {
     return this._serverConfig;
+  }
+
+  userSettings(): UserSettings {
+    return this._userSettings;
   }
 
   difficultyModifier(difficulty: Difficulty): number {

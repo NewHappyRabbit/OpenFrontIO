@@ -24,15 +24,20 @@ import { createGame } from "./game/GameImpl";
 import { loadTerrainMap as loadGameMap } from "./game/TerrainMapLoader";
 import { GameConfig, Turn } from "./Schemas";
 import { GameUpdateViewData } from "./game/GameUpdates";
+<<<<<<< HEAD
 import { andFN, manhattanDistFN, TileRef } from "./game/GameMap";
 import { targetTransportTile } from "./Util";
+=======
+import { UserSettings } from "./game/UserSettings";
+>>>>>>> ad1e565 (Added user settings ingame. User can now disable emojis from showing up.)
 
 export async function createGameRunner(
   gameID: string,
   gameConfig: GameConfig,
   callBack: (gu: GameUpdateViewData) => void,
 ): Promise<GameRunner> {
-  const config = getConfig(gameConfig);
+  const userSettings: UserSettings = new UserSettings();
+  const config = getConfig(gameConfig, userSettings);
   const gameMap = await loadGameMap(gameConfig.gameMap);
   const game = createGame(
     gameMap.gameMap,

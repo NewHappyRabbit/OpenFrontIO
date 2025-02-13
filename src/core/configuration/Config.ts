@@ -19,20 +19,24 @@ import { DefaultConfig } from "./DefaultConfig";
 import { DevConfig, DevServerConfig } from "./DevConfig";
 import { GameMap, TileRef } from "../game/GameMap";
 import { PlayerView } from "../game/GameView";
+import { UserSettings } from "../game/UserSettings";
 
 export enum GameEnv {
   Dev,
   Prod,
 }
-export function getConfig(gameConfig: GameConfig): Config {
+export function getConfig(
+  gameConfig: GameConfig,
+  userSettings: UserSettings,
+): Config {
   const sc = getServerConfig();
   switch (process.env.GAME_ENV) {
     case "dev":
-      return new DevConfig(sc, gameConfig);
+      return new DevConfig(sc, gameConfig, userSettings);
     case "preprod":
     case "prod":
       consolex.log("using prod config");
-      return new DefaultConfig(sc, gameConfig);
+      return new DefaultConfig(sc, gameConfig, userSettings);
     default:
       throw Error(`unsupported server configuration: ${process.env.GAME_ENV}`);
   }
@@ -69,6 +73,7 @@ export interface Config {
   numBots(): number;
   spawnNPCs(): boolean;
   numSpawnPhaseTurns(): number;
+  userSettings(): UserSettings;
 
   startManpower(playerInfo: PlayerInfo): number;
   populationIncreaseRate(player: Player | PlayerView): number;
