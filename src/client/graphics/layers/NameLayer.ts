@@ -26,6 +26,7 @@ class RenderInfo {
     public lastRenderCalc: number,
     public location: Cell,
     public fontSize: number,
+    public fontColor: string,
     public element: HTMLElement,
   ) {}
 }
@@ -45,13 +46,14 @@ export class NameLayer implements Layer {
   private container: HTMLDivElement;
   private myPlayer: PlayerView | null = null;
   private firstPlace: PlayerView | null = null;
+  private theme: Theme;
 
   constructor(
     private game: GameView,
-    private theme: Theme,
     private transformHandler: TransformHandler,
     private clientID: ClientID,
   ) {
+    this.theme = game.config().theme();
     this.traitorIconImage = new Image();
     this.traitorIconImage.src = traitorIcon;
     this.allianceIconImage = new Image();
@@ -96,6 +98,9 @@ export class NameLayer implements Layer {
       this.firstPlace = sorted[0];
     }
 
+    if (this.theme !== this.game.config().theme()) {
+      this.theme = this.game.config().theme();
+    }
     for (const player of this.game.playerViews()) {
       if (player.isAlive()) {
         if (!this.seenPlayers.has(player)) {
@@ -106,6 +111,7 @@ export class NameLayer implements Layer {
               0,
               null,
               0,
+              "",
               this.createPlayerElement(player),
             ),
           );
@@ -149,12 +155,10 @@ export class NameLayer implements Layer {
     element.style.alignItems = "center";
     element.style.gap = "0px";
 
-    const textColor = player.type() == PlayerType.Human ? "#000000" : "#4D4D4D";
-
     const nameDiv = document.createElement("div");
     nameDiv.classList.add("player-name");
     nameDiv.innerHTML = player.name();
-    nameDiv.style.color = textColor;
+    nameDiv.style.color = this.theme.textColor(player.info());
     nameDiv.style.fontFamily = this.theme.font();
     nameDiv.style.whiteSpace = "nowrap";
     nameDiv.style.overflow = "hidden";
@@ -178,7 +182,7 @@ export class NameLayer implements Layer {
     const troopsDiv = document.createElement("div");
     troopsDiv.classList.add("player-troops");
     troopsDiv.textContent = renderTroops(player.troops());
-    troopsDiv.style.color = textColor;
+    troopsDiv.style.color = this.theme.textColor(player.info());
     troopsDiv.style.fontFamily = this.theme.font();
     troopsDiv.style.zIndex = "3";
     troopsDiv.style.marginTop = "-5%";
@@ -219,6 +223,7 @@ export class NameLayer implements Layer {
     // Calculate base size and scale
     const baseSize = Math.max(1, Math.floor(render.player.nameLocation().size));
     render.fontSize = Math.max(4, Math.floor(baseSize * 0.4));
+    render.fontColor = this.theme.textColor(render.player.info());
 
     // Screen space calculations
     const size = this.transformHandler.scale * baseSize;
@@ -243,7 +248,9 @@ export class NameLayer implements Layer {
       ".player-troops",
     ) as HTMLDivElement;
     nameDiv.style.fontSize = `${render.fontSize}px`;
+    nameDiv.style.color = render.fontColor;
     troopsDiv.style.fontSize = `${render.fontSize}px`;
+    troopsDiv.style.color = render.fontColor;
     troopsDiv.textContent = renderTroops(render.player.troops());
 
     // Handle icons

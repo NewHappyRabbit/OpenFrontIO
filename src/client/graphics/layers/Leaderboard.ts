@@ -114,7 +114,7 @@ export class Leaderboard extends LitElement implements Layer {
       top: 10px;
       left: 10px;
       z-index: 9999;
-      background-color: rgba(30, 30, 30, 0.7);
+      background-color: rgb(31 41 55 / 0.7);
       padding: 10px;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
       border-radius: 10px;
@@ -136,7 +136,7 @@ export class Leaderboard extends LitElement implements Layer {
       color: white;
     }
     th {
-      background-color: rgba(44, 44, 44, 0.5);
+      background-color: rgb(31 41 55 / 0.5);
       color: white;
     }
     .myPlayer {
@@ -147,7 +147,7 @@ export class Leaderboard extends LitElement implements Layer {
       font-size: 1em;
     }
     tr:nth-child(even) {
-      background-color: rgba(44, 44, 44, 0.5);
+      background-color: rgb(31 41 55 / 0.5);
     }
     tbody tr {
       cursor: pointer;

@@ -1,7 +1,5 @@
 import { ClientGameRunner, joinLobby } from "./ClientGameRunner";
-import backgroundImage from "../../resources/images/EuropeBackground.svg";
 import favicon from "../../resources/images/Favicon.svg";
-
 import "./PublicLobby";
 import "./UsernameInput";
 import "./styles.css";
@@ -16,6 +14,7 @@ import "./FlagInput";
 import { FlagInput } from "./FlagInput";
 import page from "page";
 import { PublicLobby } from "./PublicLobby";
+import { UserSettings } from "../core/game/UserSettings";
 
 class Client {
   private gameStop: () => void;
@@ -25,6 +24,7 @@ class Client {
 
   private joinModal: JoinPrivateLobbyModal;
   private publicLobby: PublicLobby;
+  private userSettings: UserSettings = new UserSettings();
 
   constructor() {}
 
@@ -92,6 +92,9 @@ class Client {
         }
       });
 
+    if (this.userSettings.darkMode()) {
+      document.body.classList.add("dark-mode");
+    }
     page("/join/:lobbyId", (ctx) => {
       const lobbyId = ctx.params.lobbyId;
 
@@ -150,8 +153,6 @@ class Client {
 document.addEventListener("DOMContentLoaded", () => {
   new Client().initialize();
 });
-
-document.body.style.backgroundImage = `url(${backgroundImage})`;
 
 function setFavicon(): void {
   const link = document.createElement("link");

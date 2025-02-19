@@ -134,6 +134,7 @@ export interface Theme {
   backgroundColor(): Colord;
   falloutColor(): Colord;
   font(): string;
+  textColor(playerInfo: PlayerInfo): string;
   // unit color for alternate view
   selfColor(): Colord;
   allyColor(): Colord;

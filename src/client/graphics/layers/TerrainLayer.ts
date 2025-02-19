@@ -1,16 +1,22 @@
 import { Layer } from "./Layer";
 import { GameView } from "../../../core/game/GameView";
+import { Theme } from "../../../core/configuration/Config";
 
 export class TerrainLayer implements Layer {
   private canvas: HTMLCanvasElement;
   private context: CanvasRenderingContext2D;
   private imageData: ImageData;
+  private theme: Theme;
 
   constructor(private game: GameView) {}
   shouldTransform(): boolean {
     return true;
   }
-  tick() {}
+  tick() {
+    if (this.game.config().theme() !== this.theme) {
+      this.redraw();
+    }
+  }
 
   init() {
     console.log("redrew terrain layer");
@@ -34,9 +40,9 @@ export class TerrainLayer implements Layer {
   }
 
   initImageData() {
-    const theme = this.game.config().theme();
+    this.theme = this.game.config().theme();
     this.game.forEachTile((tile) => {
-      let terrainColor = theme.terrainColor(this.game, tile);
+      let terrainColor = this.theme.terrainColor(this.game, tile);
       // TODO: isn'te tileref and index the same?
       const index = this.game.y(tile) * this.game.width() + this.game.x(tile);
       const offset = index * 4;

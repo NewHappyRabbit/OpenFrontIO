@@ -118,7 +118,7 @@ export function createRenderer(
     new TerritoryLayer(game, eventBus),
     new StructureLayer(game, eventBus),
     new UnitLayer(game, eventBus, clientID),
-    new NameLayer(game, game.config().theme(), transformHandler, clientID),
+    new NameLayer(game, transformHandler, clientID),
     eventsDisplay,
     new RadialMenu(
       eventBus,

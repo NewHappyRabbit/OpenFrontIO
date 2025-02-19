@@ -156,11 +156,11 @@ export class OptionsMenu extends LitElement implements Layer {
             title: "Toggle Emojis",
             children: "🙂: " + (this.userSettings.emojis() ? "On" : "Off"),
           })}
-          <!-- ${button({
+          ${button({
             onClick: this.onToggleDarkModeButtonClick,
             title: "Dark Mode",
             children: "🌙: " + (this.userSettings.darkMode() ? "On" : "Off"),
-          })} -->
+          })}
         </div>
       </div>
     `;

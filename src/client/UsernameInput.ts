@@ -5,6 +5,7 @@ import {
   MAX_USERNAME_LENGTH,
   validateUsername,
 } from "../core/validations/username";
+import { UserSettings } from "../core/game/UserSettings";
 
 const usernameKey: string = "username";
 
@@ -13,6 +14,7 @@ export class UsernameInput extends LitElement {
   @state() private username: string = "";
   @property({ type: String }) validationError: string = "";
   private _isValid: boolean = true;
+  private userSettings: UserSettings = new UserSettings();
 
   // Remove static styles since we're using Tailwind
 
@@ -40,11 +42,17 @@ export class UsernameInput extends LitElement {
         @change=${this.handleChange}
         placeholder="Enter your username"
         maxlength="${MAX_USERNAME_LENGTH}"
-        class="w-full px-4 py-2 bg-white border border-gray-300 rounded-xl shadow-sm text-2xl text-gray-900 text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        class="w-full px-4 py-2 border border-gray-300 rounded-xl shadow-sm text-2xl text-center focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 ${this.userSettings.darkMode()
+          ? "bg-gray-700 text-white"
+          : "bg-white text-gray-900"}"
       />
       ${this.validationError
         ? html`<div
-            class="mt-2 px-3 py-1 text-lg text-red-600 bg-white border border-red-600 rounded"
+            class="mt-2 px-3 py-1 text-lg border rounded ${
+              this.userSettings.darkMode()
+                ? "bg-gray-700 text-red-300 border-red-300"
+                : "bg-white text-red-600 border-red-600"
+            }""
           >
             ${this.validationError}
           </div>`

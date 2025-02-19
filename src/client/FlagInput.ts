@@ -1,6 +1,7 @@
 import { LitElement, html, css } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import Countries from "./data/countries.json";
+import { UserSettings } from "../core/game/UserSettings";
 
 const flagKey: string = "flag";
 
@@ -9,6 +10,7 @@ export class FlagInput extends LitElement {
   @state() private flag: string = "";
   @state() private search: string = "";
   @state() private showModal: boolean = false;
+  private userSettings: UserSettings = new UserSettings();
 
   static styles = css`
     .hidden {
@@ -29,20 +31,13 @@ export class FlagInput extends LitElement {
       border-radius: 8px;
     }
 
+    .dark-mode .flag-button {
+      background: rgba(55, 65, 81, 0.7);
+    }
+
     .selected-flag {
       width: 48px;
     }
-    // .flag-button {
-    //   display: flex;
-    //   border: 0px;
-    //   background: none;
-    //   cursor: pointer;
-    //   padding: 0px;
-    // }
-
-    // .selected-flag {
-    //   width: 50px;
-    // }
 
     .flag-modal {
       display: flex;
@@ -68,6 +63,12 @@ export class FlagInput extends LitElement {
       border: none;
       text-align: center;
       font-size: 1.3rem;
+    }
+
+    .dark-mode .flag-search {
+      background: rgb(55, 65, 81);
+      color: white;
+      border: 1px solid rgb(209, 213, 219);
     }
 
     .flag-dropdown {
@@ -158,7 +159,11 @@ export class FlagInput extends LitElement {
 
   render() {
     return html`
-      <div class="flag-container">
+      <div
+        class="flag-container ${this.userSettings.darkMode()
+          ? "dark-mode"
+          : ""}"
+      >
         <button
           @click=${() => (this.showModal = !this.showModal)}
           class="flag-button"
